@@ -1,0 +1,309 @@
+var algorithm = null;
+var language = 'en';
+
+jdiGetTranslation = function(str, lng) {
+	lng = lng || language;
+	switch (lng) {
+		case 'ru':
+			switch (str) {
+				case 'Done': return 'Готово';
+				case 'Yes': return 'Да';
+				case 'No': return 'Нет';
+				case 'That\'s all. Good job!': return 'Все готово!';
+			}
+			break;
+	}
+	return str;
+}
+
+jdiStep = function(label, text, question, action_yes, action_no)
+{
+	this.label = label;
+	this.text = text;
+	this.question = question;
+	this.action_yes = action_yes;
+	this.action_no = action_no;
+}
+
+jdiControl = function(owner, container)
+{
+	if (typeof container == 'string') container = document.getElementById(container);
+	this.botton_yes = document.createElement('button');
+	this.botton_yes.innerHTML = jdiGetTranslation('Yes');
+	this.botton_yes.onclick = function() { owner.actionYes(); }
+	this.hide(this.botton_yes);
+	
+	this.botton_no = document.createElement('button');
+	this.botton_no.innerHTML = jdiGetTranslation('No');
+	this.botton_no.onclick = function() { owner.actionNo(); }
+	this.hide(this.botton_no);
+	
+	this.botton_ok = document.createElement('button');
+	this.botton_ok.innerHTML = jdiGetTranslation('Done');
+	this.botton_ok.onclick = function() { owner.nextStep(); }
+	this.hide(this.botton_ok);
+	
+	container.appendChild(this.botton_yes);
+	container.appendChild(this.botton_no);
+	container.appendChild(this.botton_ok);
+}
+
+jdiControl.prototype.hide = function(element)
+{
+	this.setDisplay(element, 'none');
+}
+
+jdiControl.prototype.hideAll = function()
+{
+	this.hide(this.botton_yes);
+	this.hide(this.botton_no);
+	this.hide(this.botton_ok);
+}
+
+jdiControl.prototype.show = function(element)
+{
+	this.setDisplay(element, 'inline-block');
+}
+
+jdiControl.prototype.setDisplay = function(element, display)
+{
+	if (typeof element == 'string') {
+		switch (element) {
+			case 'yes': this.botton_yes.style.display = display; break;
+			case 'no': this.botton_no.style.display = display; break;
+			case 'ok': this.botton_ok.style.display = display; break;
+		}
+	} else {
+		element.style.display = display;
+	}
+}
+
+jdiParser = function(text)
+{
+	this.text = text.replace(/^\s+|\s+$/, '');
+	this.current_term = '';
+	this.current_term_type = '';
+}
+
+jdiParser.prototype.getTerm = function()
+{
+	var m;
+	if ('' == this.text) {
+		this.current_term = '';
+		this.current_term_type = '';
+	} else if (m = this.text.match(/^[a-zа-яA-ZА-Я]+/)) {
+		this.current_term = m[0];
+		this.current_term_type = 'w';
+		this.text = this.text.substring(m[0].length);
+	} else if (m = this.text.match(/^[0-9]+([.,][0-9]+)?/)) {
+		this.current_term = m[0];
+		this.current_term_type = 'd';
+		this.text = this.text.substring(m[0].length);
+	} else if (m = this.text.match(/^\\s+/)) {
+		this.current_term = ' ';
+		this.current_term_type = 's';
+		this.text = this.text.substring(m[0].length);
+	} else {
+		this.current_term = this.text.substring(0, 1);
+		this.current_term_type = 'p';
+		this.text = this.text.substring(1);
+	}
+	return this.current_term;
+}
+
+jdiParser.prototype.end = function()
+{
+	return '' == this.text;
+}
+
+jdiParser.prototype.getAllTerms = function()
+{
+	var list = [];
+	while ('' != (term = this.getTerm())) {
+		list.push(term);
+	}
+	return list;
+}
+
+jdiAlgorithm = function(text)
+{
+	this.steps = [];
+	this.current_step = 0;
+	this.output = null;
+	this.control = null;
+	
+	function gotoWord(start, terms, word)
+	{
+		var i;
+		for (i = start; i < terms.length; i++) {
+			if (word && word == terms[i].toLowerCase()) {
+				return i;
+			}
+			if (! word && terms[i].match(/[a-zа-яA-ZА-Я]/)) {
+				return i;
+			}
+		}
+		return terms.length + 2;
+	}
+	
+	function gotoNumber(start, terms)
+	{
+		var i;
+		for (i = start; i < terms.length; i++) {
+			if (terms[i].match(/[0-9]/)) {
+				return i;
+			}
+		}
+		return terms.length + 2;
+	}
+	
+	function ucFirst(word)
+	{
+		return word.substring(0, 1).toUpperCase() + word.substring(1);
+	}
+	
+	function finalizeSentence(sentence, endchar)
+	{
+		endchar = endchar || '.';
+		return sentence.replace(/[^a-zа-яA-ZА-Я0-9]*$/, endchar);
+	}
+	
+	function joinTerms(terms, from, to)
+	{
+		var i, str = '';
+		for (i = from; i <= to; i++) {
+			str += terms[i];
+		}
+		return str;
+	}
+	
+	function trim(str)
+	{
+		return str.replace(/^\s+|\s+$/, '');
+	}
+
+	var i, j, k, p, term, termlow, terms, conditerator = 0,
+		text, sentence, lines = text.split("\n\n"),
+		yes_case, no_case, is_yes_case, is_no_case,
+		label = false, question = false, action_yes = false, action_no = false;
+		
+	for (i = 0; i < lines.length; i++) {
+		p = new jdiParser(lines[i]);
+		if (p.end()) continue;
+		terms = p.getAllTerms();
+		text = '';
+		sentence = '';
+		is_yes_case = false;
+		is_no_case = false;
+		yes_case = '';
+		no_case = '';
+		for (j = 0; j < terms.length; j++) {
+			term = terms[j];
+			termlow = term.toLowerCase();
+			if ('.' == term || '!' == term || '?' == term) {
+				// конец предложения
+				if (is_yes_case) {
+					yes_case += sentence + term + ' ';
+				} else if (is_no_case) {
+					no_case += sentence + term + ' ';
+				} else {
+					text += sentence + term + ' ';
+				}
+				sentence = '';
+				j = gotoWord(j + 1, terms) - 1;
+				if ('' != yes_case || '' != no_case) {
+					this.steps.push(new jdiStep(label, text, question, action_yes, action_no));
+				}
+				continue;
+			}
+			if (j == 0 && ('шаг' == termlow || 'step' == termlow)) {
+				// метка?
+				k = gotoNumber(j, terms);
+				if (k - j <= 3 && k < terms.length) {
+					j = k;
+					label = terms[j];
+					j = gotoWord(j + 1, terms) - 1;
+					continue;
+				}
+			}
+			if ('если' == termlow) {
+				// пробуем найти конец условия
+				k = gotoWord(j + 1, terms, 'то');
+				if (k < terms.length) {
+					question = trim(joinTerms(terms, j + 1, k - 1));
+					question = finalizeSentence(ucFirst(question), '?');
+					j = gotoWord(k + 1, terms) - 1;
+					is_yes_case = true;
+					if ('' != sentence) {
+						text += finalizeSentence(sentence);
+						sentence = '';
+					}
+					continue;
+				}
+			}
+			if ('' == sentence) {
+				term = ucFirst(term);
+			}
+			sentence += term;
+		}
+		this.steps.push(new jdiStep(label, text, question, action_yes, action_no));
+	}
+}
+
+jdiAlgorithm.prototype.start = function() 
+{
+	this.current_step = 0;
+	this.doStep();
+}
+
+jdiAlgorithm.prototype.nextStep = function() 
+{
+	this.current_step++;
+	this.doStep();
+}
+
+jdiAlgorithm.prototype.end = function() 
+{
+	this.output.innerHTML = '<p class="jdi_text jdi_alldone">' + jdiGetTranslation('That\'s all. Good job!') + '</p>';
+}
+
+jdiAlgorithm.prototype.doStep = function() 
+{
+	this.control.hideAll();
+	if (this.current_step >= this.steps.length) {
+		this.end();
+	} else {
+		var step = this.steps[this.current_step];
+		if (step.action_yes && ! this.question) {
+			this.doAction(step.action_yes);
+		} else {
+			var txt = '<p class="jdi_text">' + step.text + '</p>';
+			if (step.question) {
+				txt += '<p class="jdi_text jdi_question">' + step.question + '</p>';
+				this.control.show('yes');
+				this.control.show('no');
+			} else {
+				this.control.show('ok');
+			}
+			this.output.innerHTML = txt;
+		}
+	}
+}
+
+jdiAlgorithm.prototype.setOutput = function(output) 
+{
+	this.output = typeof output == 'string' ? document.getElementById(output) : output;
+}
+
+jdiAlgorithm.prototype.setControl = function(control) 
+{
+	this.control = control;
+}
+
+function justDoIt(algo, output, control)
+{
+	algorithm = new jdiAlgorithm(algo);
+	algorithm.setOutput(output);
+	algorithm.setControl(new jdiControl(algorithm, control));
+	algorithm.start();
+}

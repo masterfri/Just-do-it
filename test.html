@@ -1,0 +1,56 @@
+<html>
+<head>
+<script type="text/javascript" src="jquery.js"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="justdoit.js"></script>
+<script>
+if (location.hash.replace('#', '') == 'clear') {
+	document.write('<link rel="stylesheet" type="text/css" href="justdoit-clear.css" />');
+} else {
+	document.write('<link rel="stylesheet" type="text/css" href="justdoit.css" />');
+}
+</script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#just-do-it').justDoIt();
+});
+</script>
+</head>
+<body style="width: 600px; margin: 20px auto;">
+
+<p>Here is an example of an algorithm for making a pot of tea.</p>
+<br /><br />
+
+<p>
+Select CSS: <a href="javascript:;" onclick="location.href='test.html'">justdoit.css (default)</a> or 
+<a href="javascript:;"  onclick="location.hash='#clear';location.reload();">justdoit-clear.css</a>.
+</p>
+
+<div id="just-do-it" class="just-do-it"><div><div><div rel="yesno" step="1"><div>Does kettle contain water?</div>
+<div><div></div>
+<div><div rel="simple" step="2"><div>Fill the kettle.</div></div>
+</div>
+</div></div>
+<div rel="simple" step="3"><div>Plug the kettle into the power point and switch it on.</div></div>
+<div rel="yesno" step="4"><div>Is teapot empty?</div>
+<div><div></div>
+<div><div rel="simple" step="5"><div>Empty the teapot.</div></div>
+</div>
+</div></div>
+<div rel="simple" step="8"><div>Place tea leaves in the teapot.</div></div>
+<div rel="timer" delay="15" step="6"><div>Wait for 15 seconds.</div></div>
+<div rel="yesno" step="7"><div>Is the water in the kettle boiling?</div>
+<div><div></div>
+<div><div rel="goto" step="11" goto="6"></div>
+</div>
+</div></div>
+<div rel="simple" step="9"><div>Switch the kettle off.</div></div>
+<div rel="simple" step="10"><div>Pour water from the kettle into the teapot.</div></div>
+</div>
+</div></div>
+
+<br /><br />
+<p>This example was created using <a href="http://masterfri.org.ua/justdoit/en/constructor.html">constructor</a>.</p>
+
+</body>
+</html>

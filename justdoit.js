@@ -23,6 +23,7 @@ jdiView = function (target, options)
 		'text_yes' : 'Yes',
 		'text_no' : 'No',
 		'text_reset' : 'Reset',
+		'add_copy' : true,
 	}
 	$.extend(this.options, options);
 	this.target = $(target);
@@ -51,6 +52,10 @@ jdiView = function (target, options)
 	this.mainThread.find('div[rel=checkvar]').children().first().children().each(function() {
 		$T.addExpr($(this).attr('expr'));
 	});
+	if (this.options.add_copy) {
+		$('<div class="jdiv-copy"><a href="http://masterfri.org.ua/justdoit/">just do it</a> by <a href="http://masterfri.org.ua/">masterfri</a></div>')
+			.insertBefore(this.target.children().first());
+	}
 	this.start();
 }
 

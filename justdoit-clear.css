@@ -1,26 +1,17 @@
 .jdiv-main-container {
-	border: 1px solid #aaa;
 	color: #222;
 	font-family: arial, tahoma;
 	font-size: 12px;
-	padding: 5px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #bbd;
+	padding: 5px 0;
 }
-.jdiv-view, .jdiv-control {
-	padding: 5px;
-	border: 1px solid #aaa;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #fff;
+.jdiv-control {
+	padding: 5px 0;
 }
 .jdiv-view {
 	min-height: 50px;
 	margin-bottom: 5px;
+	padding: 5px 8px;
 	line-height: 160%;
-	font-size: 16px;
-	font-family: times;
 }
 .jdiv-view a {
 	color: #559;
@@ -30,15 +21,11 @@
 	text-decoration: underline;
 }
 .jdiv-control {
-	text-align: right;
+	text-align: left;
 }
 .jdiv-button {
-	padding: 4px 8px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #77b;
 	display: none;
-	margin-left: 4px;
+	margin-right: 4px;
 }
 .jdiv-timer {
 	vertical-align: middle;
@@ -47,17 +34,20 @@
 	font-size: 16px;
 	font-weight: bold;
 	margin-right: 10px;
+	margin-left: 8px;
 }
 .jdiv-button.jdiv-visible, .jdiv-timer.jdiv-visible {
 	display: inline-block;
 }
 .jdiv-button a {
-	color: #fff;
+	color: #77a;
 	font-weight: bold;
+	padding: 4px 8px;
+	display: inline-block;
 	text-decoration: none;
 }
 .jdiv-button a:hover {
-	text-decoration: underline;
+	background: #ddf;
 }
 .jdiv-case {
 	margin-top: 4px;
@@ -68,15 +58,12 @@
 .jdiv-case a {
 	display: block;
 	text-align: left;
-	padding: 4px;
-	color: #448;
+	padding: 4px 8px;
+	color: #77a;
 	text-decoration: none;
 }
 .jdiv-case a:hover {
-	color: #fff;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #aaf;
+	background: #ddf;
 }
 .jdiv-image img {
 	vertical-align: middle;
@@ -112,7 +99,7 @@
 }
 .jdiv-copy a {
 	font-size: 10px;
-	color: #666;
+	color: #44b;
 	display: inline-block;
 	border-bottom: 1px solid #aaf;
 	text-decoration: none;
