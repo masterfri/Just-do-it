@@ -11,9 +11,13 @@ if (location.hash.replace('#', '') == 'clear') {
 }
 </script>
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#just-do-it').justDoIt();
-});
+if (! $) {
+	alert('jQuery v1.4.2 or higher is required. Put `jquery.js` in a folder with file `test.html`.');
+} else {
+	$(document).ready(function() {
+		$('#just-do-it').justDoIt();
+	});
+}
 </script>
 </head>
 <body style="width: 600px; margin: 20px auto;">
