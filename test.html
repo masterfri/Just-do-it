@@ -3,7 +3,7 @@
 <script type="text/javascript" src="jquery.js"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="text/javascript" src="justdoit.js"></script>
-<script>
+<script type="text/javascript">
 if (location.hash.replace('#', '') == 'clear') {
 	document.write('<link rel="stylesheet" type="text/css" href="justdoit-clear.css" />');
 } else {
@@ -11,7 +11,7 @@ if (location.hash.replace('#', '') == 'clear') {
 }
 </script>
 <script type="text/javascript">
-if (! $) {
+if (window.$ == undefined) {
 	alert('jQuery v1.4.2 or higher is required. Put `jquery.js` in a folder with file `test.html`.');
 } else {
 	$(document).ready(function() {
