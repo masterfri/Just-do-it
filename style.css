@@ -1,0 +1,43 @@
+
+.clear {
+	clear: both;
+}
+
+body, td, p {
+	font-size: 11px;
+	font-family: Arial, Tahoma, Sans Serif;
+	line-height: 200%;
+	color: #2b2c2c;
+}
+
+.tab {
+	padding: 3px 5px;
+	float: left;
+	cursor: pointer;
+	border: 1px solid #ddd;
+	margin-bottom: -1px;
+	margin-right: 2px;
+	background: #eee;
+	-moz-border-radius: 5px 5px 0 0;
+	border-radius: 5px 5px 0 0;
+}
+.tab.selected {
+	border-bottom: 1px solid #fff;
+	background: #fff;
+}
+.contents {
+	border: 1px solid #ddd;
+	padding: 5px;
+	clear: both;
+}
+.container {
+	display: none;
+}
+.container.visible {
+	display: block;
+}
+#source {
+	width: 100%;
+	height: 400px;
+	border: 1px solid #ddd;
+}

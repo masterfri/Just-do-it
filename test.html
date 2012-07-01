@@ -1,60 +1,124 @@
 <html>
 <head>
-<script type="text/javascript" src="jquery.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<script type="text/javascript" src="justdoit.js"></script>
-<script type="text/javascript">
-if (location.hash.replace('#', '') == 'clear') {
-	document.write('<link rel="stylesheet" type="text/css" href="justdoit-clear.css" />');
-} else {
-	document.write('<link rel="stylesheet" type="text/css" href="justdoit.css" />');
-}
-</script>
-<script type="text/javascript">
-if (window.$ == undefined) {
-	alert('jQuery v1.4.2 or higher is required. Put `jquery.js` in a folder with file `test.html`.');
-} else {
-	$(document).ready(function() {
-		$('#just-do-it').justDoIt();
-	});
-}
-</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="jquery-ui.js"></script>
+	<script type="text/javascript" src="justdoit.js"></script>
+	<script type="text/javascript" src="expression.js"></script>
+	<script type="text/javascript" src="justdoit-constructor.js"></script>
+	
+	<link rel="stylesheet" href="justdoit-constructor.css" type="text/css" media="screen" />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+	<script type="text/javascript">
+		if (location.hash.replace('#', '') == 'clear') {
+			document.write('<link rel="stylesheet" type="text/css" href="justdoit-clear.css" />');
+		} else {
+			document.write('<link rel="stylesheet" type="text/css" href="justdoit.css" />');
+		}
+	</script>
+	
+	<script type="text/javascript">
+		var jdic;
+		if (window.$ == undefined) {
+			alert('jQuery v1.4.2 or higher is required. Put `jquery.js` in a folder with file `test.html`.');
+		} else {
+			window.onload = function() {
+				jdic = new jdiConstructor('jdi-constructor', {
+					'text_simple' : 'Простой шаг',
+					'text_yesno' : '`Да` или `Нет`',
+					'text_timer' : 'Таймер',
+					'text_goto' : 'Переход',
+					'text_multichoise' : 'Выбор',
+					'text_setvar' : 'Задать переменную',
+					'text_checkvar' : 'Проверить переменную',
+					'text_userinput' : 'Ввод значения',
+					'text_add' : 'Добавить',
+					'text_step_no' : 'Шаг №',
+					'text_goto_step_no' : 'Перейти к шагу №',
+					'text_case_yes' : 'Да',
+					'text_case_no' : 'Нет',
+					'text_type_question' : 'Введите вопрос',
+					'text_type_instructions' : 'Напишите инструкции',
+					'text_type_situation' : 'Опишите ситуацию',
+					'text_type_variant' : 'Укажите вариант',
+					'text_type_expression' : 'Укажите выражение',
+					'text_delete' : 'Удалить',
+					'text_hide_if' : 'Скрыть если',
+					'text_confirm_delete_step' : 'Вы уверены что хотите удалить этот шаг?',
+					'text_confirm_delete_variant' : 'Вы уверены что хотите удалить этот вариант?',
+					'text_add_variant' : 'Добавить вариант',
+					'text_delay' : 'Пауза',
+					'text_seconds' : 'секунд',
+				});
+				$('#tab .tab').click(function() {
+					$(this.parentNode.parentNode)
+						.find('.container')
+						.removeClass('visible')
+						.eq($(this).index())
+						.addClass('visible');
+					$(this.parentNode)
+						.children()
+						.removeClass('selected');
+					$(this).addClass('selected');
+				});
+				$('#tab-source').click(function() {
+					var scripts = ['jquery.js', 'justdoit.js'];
+					var css = ['justdoit.css'];
+					$('#source').val(
+								'<script type="text/javascript" src="' + 
+								scripts.join('"><' + '/script>' + "\n" + 
+								'<script type="text/javascript" src="') + 
+								'"><' + "/script>\n" +
+								'<link rel="stylesheet" type="text/css" href="' +
+								css.join('" /' + ">\n" + '<link rel="stylesheet" type="text/css" href="') + 
+								'" /' + ">\n" +
+								'<script type="text/javascript">' + "\n" +
+								"$(document).ready(function() {\n" + 
+								"    $('#just-do-it').justDoIt();\n" +
+								"});\n<" + "/script>\n" + jdic.saveHtml()
+					);
+				});
+				$('#tab-preview').click(function() {
+					$('#jdi-preview').html(jdic.saveHtml());
+					new jdiView('just-do-it', {
+						'text_next' : 'Далее',
+						'text_end' : 'Конец',
+						'text_yes' : 'Да',
+						'text_no' : 'Нет',
+						'text_reset' : 'Сначала',
+					});
+				});
+			}
+		}
+	</script>
 </head>
-<body style="width: 600px; margin: 20px auto;">
+<body style="width: 960px; margin: 20px auto;">
 
-<p>Here is an example of an algorithm for making a pot of tea.</p>
-<br /><br />
 
-<p>
-Select CSS: <a href="javascript:;" onclick="location.href='test.html'">justdoit.css (default)</a> or 
-<a href="javascript:;"  onclick="location.hash='#clear';location.reload();">justdoit-clear.css</a>.
-</p>
-
-<div id="just-do-it" class="just-do-it"><div><div><div rel="yesno" step="1"><div>Does kettle contain water?</div>
-<div><div></div>
-<div><div rel="simple" step="2"><div>Fill the kettle.</div></div>
-</div>
-</div></div>
-<div rel="simple" step="3"><div>Plug the kettle into the power point and switch it on.</div></div>
-<div rel="yesno" step="4"><div>Is teapot empty?</div>
-<div><div></div>
-<div><div rel="simple" step="5"><div>Empty the teapot.</div></div>
-</div>
-</div></div>
-<div rel="simple" step="8"><div>Place tea leaves in the teapot.</div></div>
-<div rel="timer" delay="15" step="6"><div>Wait for 15 seconds.</div></div>
-<div rel="yesno" step="7"><div>Is the water in the kettle boiling?</div>
-<div><div></div>
-<div><div rel="goto" step="11" goto="6"></div>
-</div>
-</div></div>
-<div rel="simple" step="9"><div>Switch the kettle off.</div></div>
-<div rel="simple" step="10"><div>Pour water from the kettle into the teapot.</div></div>
-</div>
-</div></div>
-
-<br /><br />
-<p>This example was created using <a href="http://masterfri.org.ua/justdoit/en/constructor.html">constructor</a>.</p>
+	<div class="tab-main-container" id="tab">
+		<div class="tabs">
+			<div class="tab selected" id="tab-constructor">Конструктор</div>
+			<div class="tab" id="tab-source">Исходник</div>
+			<div class="tab" id="tab-preview">Превью</div>
+		</div>
+		<div class="contents">
+			<div class="container visible">
+				<div id="jdi-constructor"></div>
+			</div>
+			<div class="container">
+				<div id="jdi-source">
+					<textarea id="source" class="source" onfocus="this.select()"></textarea>
+					<a href="#" onclick="jdic.loadHtml($('#source').val());$('#tab-constructor').click();">Загрузить</a>
+				</div>
+			</div>
+			<div class="container">
+				<div id="jdi-preview">
+				</div>
+			</div>
+		</div>
+	</div>	
 
 </body>
 </html>
+
+

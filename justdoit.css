@@ -3,24 +3,25 @@
 	color: #222;
 	font-family: arial, tahoma;
 	font-size: 12px;
-	padding: 5px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #bbd;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	position: relative;
 }
 .jdiv-view, .jdiv-control {
-	padding: 5px;
-	border: 1px solid #aaa;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
 	background: #fff;
 }
 .jdiv-view {
 	min-height: 50px;
-	margin-bottom: 5px;
 	line-height: 160%;
-	font-size: 16px;
+	font-size: 14px;
 	font-family: times;
+	padding: 5px;
+	color: #444;
+	border-radius: 6px 6px 0px 0px;
+	-webkit-border-radius: 6px 6px 0px 0px;
+	-moz-border-radius-topleft: 6px;
+	-moz-border-radius-topright: 6px;
 }
 .jdiv-view a {
 	color: #559;
@@ -30,34 +31,54 @@
 	text-decoration: underline;
 }
 .jdiv-control {
-	text-align: right;
+	clear: both;
+	text-align: left;
+	padding: 5px;
+	border-radius: 0px 0px 6px 6px;
+	-webkit-border-radius: 0px 0px 6px 6px;
+	-moz-border-radius-bottomright: 6px;
+	-moz-border-radius-bottomleft: 6px;
 }
 .jdiv-button {
-	padding: 4px 8px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-	background: #77b;
-	display: none;
-	margin-left: 4px;
+	display: inline-block;
+	margin-right: 4px;
+}
+.jdiv-button a {
+	display: inline-block;
+	height: 20px;
+	border: 1px solid #8084af;
+	padding-right: 5px;
+	padding-left: 5px;
+	background-color: #9a90c4;
+	line-height: 20px;
+	color: #ffffff;
+	font-weight: bold;
+	border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	-moz-border-radius-topleft: 5px;
+	-moz-border-radius-topright: 5px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	text-shadow: 0px 1px 1px #000000;
+	background-image: linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -o-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	text-decoration: none;
+}
+.jdiv-hidden {
+	display: none !important;
 }
 .jdiv-timer {
 	vertical-align: middle;
-	display: none;
+	display: inline-block;
 	color: #666;
 	font-size: 16px;
 	font-weight: bold;
 	margin-right: 10px;
 }
-.jdiv-button.jdiv-visible, .jdiv-timer.jdiv-visible {
+.jdiv-userinput-container {
 	display: inline-block;
-}
-.jdiv-button a {
-	color: #fff;
-	font-weight: bold;
-	text-decoration: none;
-}
-.jdiv-button a:hover {
-	text-decoration: underline;
 }
 .jdiv-case {
 	margin-top: 4px;
@@ -68,51 +89,54 @@
 .jdiv-case a {
 	display: block;
 	text-align: left;
-	padding: 4px;
-	color: #448;
+	padding: 2px 4px;
+	color: #966;
 	text-decoration: none;
+	font-weight: bold;
+	margin-right: 15px;
 }
 .jdiv-case a:hover {
 	color: #fff;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	background: #aaf;
+	background-color: #aaf;
+	background-image: linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -o-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	text-shadow: 0px 1px 1px #000000;
 }
-.jdiv-image img {
+.jim {
+	clear: both;
+	display: block;
+}
+.jim img {
 	vertical-align: middle;
 	border: 1px solid #eee;
 }
-.jdiv-imageleft {
-	display: block;
-	text-align: left;
+.align-left {
+	float: left;
+	margin: 0 5px 5px 0;
 }
-.jdiv-imageleft img {
-	border: 1px solid #eee;
+.align-right {
+	float: right;
+	margin: 0 0 5px 5px;
 }
-.jdiv-imageright {
-	display: block;
-	text-align: right;
-}
-.jdiv-imageright img {
-	border: 1px solid #eee;
-}
-.jdiv-imagecenter {
-	display: block;
+.align-center {
+	margin: 0 0 5px 0;
 	text-align: center;
-}
-.jdiv-imagecenter img {
-	border: 1px solid #eee;
 }
 .jdiv-copy {
 	font-size: 10px;
-	color: #999;
+	color: #555;
 	text-align: right;
-	padding: 2px 0 2px 0;
+	padding: 3px 5px 3px 0;
 	line-height: 100%;
+	font-family: arial, tahoma;
 }
 .jdiv-copy a {
 	font-size: 10px;
-	color: #666;
+	color: #888;
 	display: inline-block;
 	border-bottom: 1px solid #aaf;
 	text-decoration: none;
@@ -120,4 +144,36 @@
 .jdiv-copy a:hover {
 	color: #aaf;
 	text-decoration: none;
+}
+.jdiv-userinput-container {
+	display: inline-block;
+	margin: 0 5px 0 0;
+	padding: 0;
+}
+.jdiv-userinput-container input {
+	border: 1px solid #aaa;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	font-size: 12px;
+	padding: 3px 5px;
+}
+.jdiv-userinput-container input:focus {
+	outline: none;
+}
+.jdiv-hardreser {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+	display: block;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background: red;
+	bottom: 5px;
+	right: 5px;
+	background-image: linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -webkit-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -moz-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
+	background-image: -o-linear-gradient(top, rgba(255,255,255,0.3) 0%, rgba(0,0,0,0.3) 100%);
 }
